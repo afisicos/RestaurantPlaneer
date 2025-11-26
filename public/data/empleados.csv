@@ -1,0 +1,9 @@
+id,nombre,rol,tarifaHora,horasSemana
+emp001,María González,Cocinera Jefe,18.50,40
+emp002,Carlos Ruiz,Cocinero,15.00,38
+emp003,Laura Martínez,Camarera,12.00,35
+emp004,Pedro Sánchez,Camarero,12.00,30
+emp006,Juan Pérez,Ayudante de Cocina,11.00,32
+emp007,Sofía García,Camarera,12.00,28
+emp008,Miguel Torres,Chef de Partie,14.50,36
+emp010,David Moreno,Barman,13.00,30

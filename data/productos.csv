@@ -1,0 +1,21 @@
+id,nombre,precio,categoria,tiempoPreparacion,almacenajeRequerido,horasEmpleadoRequeridas
+prod001,Paella Valenciana,24.50,Plato Principal,45,0.10,0.30
+prod002,Gazpacho Andaluz,11.50,Entrante,10,0.03,0.10
+prod003,Pulpo a la Gallega,28.00,Plato Principal,60,0.08,0.40
+prod004,Tortilla Española,15.50,Tapas,20,0.05,0.20
+prod005,Jamón Ibérico (100g),32.00,Tapas,5,0.08,0.05
+prod006,Croquetas Caseras (6 uds),13.00,Tapas,15,0.04,0.15
+prod007,Paella de Marisco,30.00,Plato Principal,50,0.12,0.35
+prod008,Ensalada Mixta,10.50,Entrante,8,0.02,0.10
+prod009,Solomillo al Whisky,32.00,Plato Principal,25,0.08,0.25
+prod010,Calamares a la Romana,18.00,Tapas,12,0.05,0.15
+prod011,Sangría (jarra 1L),16.00,Bebida,5,0.03,0.05
+prod012,Cerveza Mahou (botella),5.50,Bebida,2,0.01,0.02
+prod013,Vino Tinto Reserva (botella),24.00,Bebida,2,0.02,0.02
+prod014,Tarta de Santiago,9.50,Postre,5,0.03,0.10
+prod015,Flan Casero,7.50,Postre,3,0.02,0.08
+prod016,Arroz Negro,26.00,Plato Principal,40,0.08,0.30
+prod017,Gambas al Ajillo,21.00,Tapas,10,0.05,0.12
+prod018,Salmorejo Cordobés,10.00,Entrante,8,0.03,0.10
+prod019,Cordero Asado,36.00,Plato Principal,90,0.10,0.50
+prod020,Churros con Chocolate,9.00,Postre,8,0.03,0.12

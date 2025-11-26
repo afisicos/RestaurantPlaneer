@@ -1,0 +1,31 @@
+id,descripcion,cantidad,categoria,fecha
+gast001,Alquiler local enero,1800.00,Alquiler,2024-01-01
+gast002,Suministro eléctrico enero,220.00,Suministros,2024-01-05
+gast003,Suministro agua enero,60.00,Suministros,2024-01-05
+gast004,Compra arroz bomba (50kg),95.00,Materias Primas,2024-01-08
+gast005,Compra marisco fresco,320.00,Materias Primas,2024-01-08
+gast006,Compra jamón ibérico (5kg),280.00,Materias Primas,2024-01-08
+gast007,Compra verduras y hortalizas,130.00,Materias Primas,2024-01-10
+gast008,Compra vino (caja 12 botellas),120.00,Materias Primas,2024-01-10
+gast009,Compra aceite de oliva (20L),70.00,Materias Primas,2024-01-10
+gast010,Mantenimiento horno,150.00,Mantenimiento,2024-01-12
+gast011,Publicidad redes sociales enero,80.00,Marketing,2024-01-15
+gast012,Compra carne y pollo,240.00,Materias Primas,2024-01-15
+gast013,Compra pescado fresco,200.00,Materias Primas,2024-01-15
+gast014,Seguro local enero,120.00,Otros,2024-01-15
+gast015,Compra cerveza (caja 24 botellas),55.00,Materias Primas,2024-01-18
+gast016,Reparación frigorífico,200.00,Mantenimiento,2024-01-18
+gast017,Compra productos limpieza,60.00,Otros,2024-01-20
+gast018,Publicidad Google Ads enero,100.00,Marketing,2024-01-20
+gast019,Compra pan y bollería,70.00,Materias Primas,2024-01-22
+gast020,Compra especias y condimentos,85.00,Materias Primas,2024-01-22
+gast021,Suministro gas enero,100.00,Suministros,2024-01-25
+gast022,Compra postres y helados,130.00,Materias Primas,2024-01-25
+gast023,Uniforme personal nuevo,150.00,Otros,2024-01-25
+gast024,Compra marisco (reposición),280.00,Materias Primas,2024-01-28
+gast025,Publicidad local enero,60.00,Marketing,2024-01-28
+gast026,Compra aceite y vinagre,50.00,Materias Primas,2024-01-30
+gast027,Mantenimiento equipos cocina,120.00,Mantenimiento,2024-01-30
+gast028,Compra frutas frescas,70.00,Materias Primas,2024-01-30
+gast029,Seguro equipamiento,80.00,Otros,2024-01-31
+gast030,Compra bebidas varias,100.00,Materias Primas,2024-01-31
