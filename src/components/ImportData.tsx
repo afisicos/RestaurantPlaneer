@@ -62,7 +62,7 @@ export default function ImportData() {
           };
           break;
         default:
-          throw new Error('Tipo de importación no válido');
+          throw new Error('Invalid import type');
       }
 
       setResults([result]);
@@ -79,7 +79,7 @@ export default function ImportData() {
       setResults([{
         type: importType,
         success: 0,
-        errors: [`Error al leer el archivo: ${error instanceof Error ? error.message : 'Error desconocido'}`],
+        errors: [`Error reading file: ${error instanceof Error ? error.message : 'Unknown error'}`],
       }]);
     } finally {
       setIsImporting(false);
@@ -109,7 +109,7 @@ export default function ImportData() {
         allResults.push({
           type: 'products',
           success: 0,
-          errors: ['No se pudo cargar productos.csv. Asegúrate de que el archivo existe en /data/'],
+          errors: ['Could not load productos.csv. Make sure the file exists in /data/'],
         });
       }
 
@@ -128,7 +128,7 @@ export default function ImportData() {
         allResults.push({
           type: 'employees',
           success: 0,
-          errors: ['No se pudo cargar empleados.csv. Asegúrate de que el archivo existe en /data/'],
+          errors: ['Could not load empleados.csv. Make sure the file exists in /data/'],
         });
       }
 
@@ -147,7 +147,7 @@ export default function ImportData() {
         allResults.push({
           type: 'sales',
           success: 0,
-          errors: ['No se pudo cargar ventas.csv. Asegúrate de que el archivo existe en /data/'],
+          errors: ['Could not load ventas.csv. Make sure the file exists in /data/'],
         });
       }
 
@@ -166,7 +166,7 @@ export default function ImportData() {
         allResults.push({
           type: 'expenses',
           success: 0,
-          errors: ['No se pudo cargar gastos.csv. Asegúrate de que el archivo existe en /data/'],
+          errors: ['Could not load gastos.csv. Make sure the file exists in /data/'],
         });
       }
 
@@ -185,7 +185,7 @@ export default function ImportData() {
       setResults([{
         type: 'products',
         success: 0,
-        errors: [`Error general: ${error instanceof Error ? error.message : 'Error desconocido'}`],
+        errors: [`General error: ${error instanceof Error ? error.message : 'Unknown error'}`],
       }]);
     } finally {
       setIsImporting(false);
@@ -204,15 +204,15 @@ export default function ImportData() {
   return (
     <div className="import-page">
       <div className="page-header">
-        <h1>Importar Datos desde CSV</h1>
+        <h1>Import Data from CSV</h1>
       </div>
 
       <div className="import-container">
         <div className="import-card">
-          <h2>Configuración de Importación</h2>
+          <h2>Import Configuration</h2>
           
           <div className="form-group">
-            <label>Tipo de Datos</label>
+            <label>Data Type</label>
             <select
               value={importType}
               onChange={(e) => setImportType(e.target.value as ImportType)}
@@ -233,11 +233,11 @@ export default function ImportData() {
                 onChange={(e) => setMergeMode(e.target.checked)}
                 disabled={isImporting}
               />
-              <span>Fusionar con datos existentes (actualizar y agregar)</span>
+              <span>Merge with existing data (update and add)</span>
             </label>
             <p className="help-text">
-              Si está activado, actualizará los registros existentes con el mismo ID y agregará los nuevos. 
-              Si está desactivado, reemplazará todos los datos existentes del tipo seleccionado.
+              If enabled, it will update existing records with the same ID and add new ones. 
+              If disabled, it will replace all existing data of the selected type.
             </p>
           </div>
 
@@ -252,13 +252,13 @@ export default function ImportData() {
                   className="file-input"
                 />
                 <span className="file-upload-button">
-                  {isImporting ? 'Importando...' : `Seleccionar archivo CSV de ${getTypeLabel(importType)}`}
+                  {isImporting ? 'Importing...' : `Select ${getTypeLabel(importType)} CSV file`}
                 </span>
               </label>
             </div>
 
             <div className="divider">
-              <span>O</span>
+              <span>OR</span>
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1rem' }}>
@@ -292,13 +292,13 @@ export default function ImportData() {
 
         {results.length > 0 && (
           <div className="results-card">
-            <h2>Resultados de la Importación</h2>
+            <h2>Import Results</h2>
             {results.map((result, index) => (
               <div key={index} className={`result-item ${result.errors.length > 0 ? 'error' : 'success'}`}>
                 <h3>{getTypeLabel(result.type)}</h3>
                 {result.success > 0 && (
                   <p className="success-message">
-                    ✅ {result.success} {result.success === 1 ? 'registro importado' : 'registros importados'} correctamente
+                    ✅ {result.success} {result.success === 1 ? 'record imported' : 'records imported'} successfully
                   </p>
                 )}
                 {result.errors.length > 0 && (
@@ -312,14 +312,14 @@ export default function ImportData() {
             ))}
             {results.every(r => r.success > 0 && r.errors.length === 0) && (
               <div className="success-banner">
-                <p>🎉 ¡Importación completada exitosamente! Redirigiendo al dashboard...</p>
+                <p>🎉 Import completed successfully! Redirecting to dashboard...</p>
               </div>
             )}
           </div>
         )}
 
         <div className="info-card">
-          <h3>📋 Formato de Archivos CSV</h3>
+          <h3>📋 CSV File Format</h3>
           <div className="format-info">
             <div>
               <strong>productos.csv:</strong>
