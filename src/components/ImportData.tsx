@@ -7,6 +7,7 @@ import {
   importSalesFromCSV,
   importExpensesFromCSV,
 } from '../utils/csvImporter';
+import { storageService } from '../utils/storage';
 import './ImportData.css';
 
 type ImportType = 'products' | 'employees' | 'sales' | 'expenses';
@@ -93,7 +94,7 @@ export default function ImportData() {
     const allResults: ImportResult[] = [];
 
     try {
-      // Importar productos
+      // Import products
       try {
         const productsResponse = await fetch('/data/productos.csv');
         if (productsResponse.ok) {
@@ -112,7 +113,7 @@ export default function ImportData() {
         });
       }
 
-      // Importar empleados
+      // Import employees
       try {
         const employeesResponse = await fetch('/data/empleados.csv');
         if (employeesResponse.ok) {
@@ -131,7 +132,7 @@ export default function ImportData() {
         });
       }
 
-      // Importar ventas
+      // Import sales
       try {
         const salesResponse = await fetch('/data/ventas.csv');
         if (salesResponse.ok) {
@@ -150,7 +151,7 @@ export default function ImportData() {
         });
       }
 
-      // Importar gastos
+      // Import expenses
       try {
         const expensesResponse = await fetch('/data/gastos.csv');
         if (expensesResponse.ok) {
@@ -193,10 +194,10 @@ export default function ImportData() {
 
   const getTypeLabel = (type: ImportType): string => {
     switch (type) {
-      case 'products': return 'Productos';
-      case 'employees': return 'Empleados';
-      case 'sales': return 'Ventas';
-      case 'expenses': return 'Gastos';
+      case 'products': return 'Products';
+      case 'employees': return 'Employees';
+      case 'sales': return 'Sales';
+      case 'expenses': return 'Expenses';
     }
   };
 
@@ -217,10 +218,10 @@ export default function ImportData() {
               onChange={(e) => setImportType(e.target.value as ImportType)}
               disabled={isImporting}
             >
-              <option value="products">Productos</option>
-              <option value="employees">Empleados</option>
-              <option value="sales">Ventas</option>
-              <option value="expenses">Gastos</option>
+              <option value="products">Products</option>
+              <option value="employees">Employees</option>
+              <option value="sales">Sales</option>
+              <option value="expenses">Expenses</option>
             </select>
           </div>
 
@@ -260,15 +261,31 @@ export default function ImportData() {
               <span>O</span>
             </div>
 
-            <button
-              className="btn-primary btn-large"
-              onClick={handleImportAll}
-              disabled={isImporting}
-            >
-              {isImporting ? 'Importando...' : 'Importar Todos los Archivos de Ejemplo'}
-            </button>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1rem' }}>
+              <button
+                className="btn-secondary btn-large"
+                onClick={() => {
+                  if (window.confirm('Are you sure you want to clear all data? This will delete all products, employees, sales, and expenses from localStorage.')) {
+                    storageService.clearAll();
+                    window.dispatchEvent(new Event('dataImported'));
+                    alert('LocalStorage cleared! Please refresh the page or import data again.');
+                  }
+                }}
+                disabled={isImporting}
+              >
+                🗑️ Clear All Data (LocalStorage)
+              </button>
+              
+              <button
+                className="btn-primary btn-large"
+                onClick={handleImportAll}
+                disabled={isImporting}
+              >
+                {isImporting ? 'Importing...' : 'Import All Sample Files'}
+              </button>
+            </div>
             <p className="help-text">
-              Esto importará automáticamente productos.csv, empleados.csv, ventas.csv y gastos.csv desde la carpeta /data/
+              This will automatically import productos.csv, empleados.csv, ventas.csv and gastos.csv from the /data/ folder
             </p>
           </div>
         </div>
@@ -321,9 +338,6 @@ export default function ImportData() {
               <code>id,descripcion,cantidad,categoria,fecha</code>
             </div>
           </div>
-          <p className="note">
-            💡 Los archivos de ejemplo están disponibles en la carpeta <code>data/</code> del proyecto.
-          </p>
         </div>
       </div>
     </div>

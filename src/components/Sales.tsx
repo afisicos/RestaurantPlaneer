@@ -3,7 +3,7 @@ import type { Sale, Product, Employee } from '../types';
 import { storageService } from '../utils/storage';
 import './Sales.css';
 
-export default function Sales({ onDataCreated }: { onDataCreated?: () => void }) {
+export default function Sales() {
   const [sales, setSales] = useState<Sale[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [employees, setEmployees] = useState<Employee[]>([]);
@@ -20,19 +20,6 @@ export default function Sales({ onDataCreated }: { onDataCreated?: () => void })
     loadData();
   }, []);
 
-  // Escuchar evento del tutorial para abrir formulario automáticamente
-  useEffect(() => {
-    const handleTutorialInteractive = (e: CustomEvent) => {
-      if (e.detail?.stepType === 'saleCreated') {
-        setShowForm(true);
-      }
-    };
-
-    window.addEventListener('tutorialEnterInteractive', handleTutorialInteractive as EventListener);
-    return () => {
-      window.removeEventListener('tutorialEnterInteractive', handleTutorialInteractive as EventListener);
-    };
-  }, []);
 
   const loadData = () => {
     setSales(storageService.getSales());
@@ -59,9 +46,6 @@ export default function Sales({ onDataCreated }: { onDataCreated?: () => void })
     storageService.saveSales(updatedSales);
     loadData();
     resetForm();
-    if (onDataCreated) {
-      onDataCreated();
-    }
   };
 
   const resetForm = () => {
@@ -76,7 +60,7 @@ export default function Sales({ onDataCreated }: { onDataCreated?: () => void })
   };
 
   const handleDelete = (id: string) => {
-    if (confirm('¿Estás seguro de eliminar esta venta?')) {
+    if (confirm('Are you sure you want to delete this sale?')) {
       const updatedSales = sales.filter(s => s.id !== id);
       storageService.saveSales(updatedSales);
       loadData();
@@ -110,25 +94,25 @@ export default function Sales({ onDataCreated }: { onDataCreated?: () => void })
   return (
     <div className="sales-page">
       <div className="page-header">
-        <h1>Registro de Ventas</h1>
+        <h1>Sales Registration</h1>
         <button className="btn-primary" onClick={() => setShowForm(!showForm)}>
-          {showForm ? 'Cancelar' : '+ Nueva Venta'}
+          {showForm ? 'Cancel' : '+ New Sale'}
         </button>
       </div>
 
       {showForm && (
         <div className="form-card">
-          <h2>Nueva Venta</h2>
+          <h2>New Sale</h2>
           <form onSubmit={handleSubmit}>
             <div className="form-row">
               <div className="form-group">
-                <label>Producto</label>
+                <label>Product</label>
                 <select
                   value={formData.productId}
                   onChange={(e) => handleProductChange(e.target.value)}
                   required
                 >
-                  <option value="">Seleccionar producto</option>
+                  <option value="">Select product</option>
                   {products.map((product) => (
                     <option key={product.id} value={product.id}>
                       {product.name} - {formatCurrency(product.price)}
@@ -138,7 +122,7 @@ export default function Sales({ onDataCreated }: { onDataCreated?: () => void })
               </div>
 
               <div className="form-group">
-                <label>Cantidad</label>
+                <label>Quantity</label>
                 <input
                   type="number"
                   step="0.01"
@@ -151,7 +135,7 @@ export default function Sales({ onDataCreated }: { onDataCreated?: () => void })
 
             <div className="form-row">
               <div className="form-group">
-                <label>Precio Unitario (€)</label>
+                <label>Unit Price (€)</label>
                 <input
                   type="number"
                   step="0.01"
@@ -162,13 +146,13 @@ export default function Sales({ onDataCreated }: { onDataCreated?: () => void })
               </div>
 
               <div className="form-group">
-                <label>Empleado</label>
+                <label>Employee</label>
                 <select
                   value={formData.employeeId}
                   onChange={(e) => setFormData({ ...formData, employeeId: e.target.value })}
                   required
                 >
-                  <option value="">Seleccionar empleado</option>
+                  <option value="">Select employee</option>
                   {employees.map((employee) => (
                     <option key={employee.id} value={employee.id}>
                       {employee.name}
@@ -179,7 +163,7 @@ export default function Sales({ onDataCreated }: { onDataCreated?: () => void })
             </div>
 
             <div className="form-group">
-              <label>Fecha</label>
+              <label>Date</label>
               <input
                 type="date"
                 value={formData.date}
@@ -196,10 +180,10 @@ export default function Sales({ onDataCreated }: { onDataCreated?: () => void })
 
             <div className="form-actions">
               <button type="submit" className="btn-primary">
-                Registrar Venta
+                Register Sale
               </button>
               <button type="button" className="btn-secondary" onClick={resetForm}>
-                Cancelar
+                Cancel
               </button>
             </div>
           </form>
@@ -207,18 +191,18 @@ export default function Sales({ onDataCreated }: { onDataCreated?: () => void })
       )}
 
       <div className="sales-table-card">
-        <h2>Historial de Ventas</h2>
+        <h2>Sales History</h2>
         <div className="table-container">
           <table className="sales-table">
             <thead>
               <tr>
-                <th>Fecha</th>
-                <th>Producto</th>
-                <th>Cantidad</th>
-                <th>Precio Unit.</th>
+                <th>Date</th>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Unit Price</th>
                 <th>Total</th>
-                <th>Empleado</th>
-                <th>Acciones</th>
+                <th>Employee</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -252,7 +236,7 @@ export default function Sales({ onDataCreated }: { onDataCreated?: () => void })
 
       {sales.length === 0 && (
         <div className="empty-state">
-          <p>No hay ventas registradas. Registra tu primera venta para comenzar.</p>
+          <p>No sales registered. Register your first sale to get started.</p>
         </div>
       )}
     </div>

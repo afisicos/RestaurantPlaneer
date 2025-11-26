@@ -3,7 +3,7 @@ import type { Employee } from '../types';
 import { storageService } from '../utils/storage';
 import './Employees.css';
 
-export default function Employees({ onDataCreated }: { onDataCreated?: () => void }) {
+export default function Employees() {
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [editingEmployee, setEditingEmployee] = useState<Employee | null>(null);
@@ -18,19 +18,6 @@ export default function Employees({ onDataCreated }: { onDataCreated?: () => voi
     loadEmployees();
   }, []);
 
-  // Escuchar evento del tutorial para abrir formulario automáticamente
-  useEffect(() => {
-    const handleTutorialInteractive = (e: CustomEvent) => {
-      if (e.detail?.stepType === 'employeeCreated') {
-        setShowForm(true);
-      }
-    };
-
-    window.addEventListener('tutorialEnterInteractive', handleTutorialInteractive as EventListener);
-    return () => {
-      window.removeEventListener('tutorialEnterInteractive', handleTutorialInteractive as EventListener);
-    };
-  }, []);
 
   const loadEmployees = () => {
     setEmployees(storageService.getEmployees());
@@ -54,9 +41,6 @@ export default function Employees({ onDataCreated }: { onDataCreated?: () => voi
     storageService.saveEmployees(updatedEmployees);
     loadEmployees();
     resetForm();
-    if (!editingEmployee && onDataCreated) {
-      onDataCreated();
-    }
   };
 
   const resetForm = () => {
@@ -82,7 +66,7 @@ export default function Employees({ onDataCreated }: { onDataCreated?: () => voi
   };
 
   const handleDelete = (id: string) => {
-    if (confirm('¿Estás seguro de eliminar este empleado?')) {
+    if (confirm('Are you sure you want to delete this employee?')) {
       const updatedEmployees = employees.filter(e => e.id !== id);
       storageService.saveEmployees(updatedEmployees);
       loadEmployees();
@@ -99,19 +83,19 @@ export default function Employees({ onDataCreated }: { onDataCreated?: () => voi
   return (
     <div className="employees-page">
       <div className="page-header">
-        <h1>Gestión de Empleados</h1>
+        <h1>Employee Management</h1>
         <button className="btn-primary" onClick={() => setShowForm(!showForm)}>
-          {showForm ? 'Cancelar' : '+ Nuevo Empleado'}
+          {showForm ? 'Cancel' : '+ New Employee'}
         </button>
       </div>
 
       {showForm && (
         <div className="form-card">
-          <h2>{editingEmployee ? 'Editar Empleado' : 'Nuevo Empleado'}</h2>
+          <h2>{editingEmployee ? 'Edit Employee' : 'New Employee'}</h2>
           <form onSubmit={handleSubmit}>
             <div className="form-row">
               <div className="form-group">
-                <label>Nombre</label>
+                <label>Name</label>
                 <input
                   type="text"
                   value={formData.name}
@@ -121,7 +105,7 @@ export default function Employees({ onDataCreated }: { onDataCreated?: () => voi
               </div>
 
               <div className="form-group">
-                <label>Rol/Cargo</label>
+                <label>Role/Position</label>
                 <input
                   type="text"
                   value={formData.role}
@@ -133,7 +117,7 @@ export default function Employees({ onDataCreated }: { onDataCreated?: () => voi
 
             <div className="form-row">
               <div className="form-group">
-                <label>Tarifa por Hora (€)</label>
+                <label>Hourly Rate (€)</label>
                 <input
                   type="number"
                   step="0.01"
@@ -144,7 +128,7 @@ export default function Employees({ onDataCreated }: { onDataCreated?: () => voi
               </div>
 
               <div className="form-group">
-                <label>Horas por Semana</label>
+                <label>Hours per Week</label>
                 <input
                   type="number"
                   step="0.1"
@@ -157,10 +141,10 @@ export default function Employees({ onDataCreated }: { onDataCreated?: () => voi
 
             <div className="form-actions">
               <button type="submit" className="btn-primary">
-                {editingEmployee ? 'Actualizar' : 'Crear'}
+                {editingEmployee ? 'Update' : 'Create'}
               </button>
               <button type="button" className="btn-secondary" onClick={resetForm}>
-                Cancelar
+                Cancel
               </button>
             </div>
           </form>
@@ -186,11 +170,11 @@ export default function Employees({ onDataCreated }: { onDataCreated?: () => voi
                 </div>
               </div>
               <div className="employee-info">
-                <p><strong>Rol:</strong> {employee.role}</p>
-                <p><strong>Tarifa por Hora:</strong> {formatCurrency(employee.hourlyRate)}</p>
-                <p><strong>Horas/Semana:</strong> {employee.hoursPerWeek}h</p>
-                <p><strong>Costo Semanal:</strong> {formatCurrency(weeklyCost)}</p>
-                <p><strong>Costo Mensual Estimado:</strong> {formatCurrency(monthlyCost)}</p>
+                <p><strong>Role:</strong> {employee.role}</p>
+                <p><strong>Hourly Rate:</strong> {formatCurrency(employee.hourlyRate)}</p>
+                <p><strong>Hours/Week:</strong> {employee.hoursPerWeek}h</p>
+                <p><strong>Weekly Cost:</strong> {formatCurrency(weeklyCost)}</p>
+                <p><strong>Estimated Monthly Cost:</strong> {formatCurrency(monthlyCost)}</p>
               </div>
             </div>
           );
@@ -199,7 +183,7 @@ export default function Employees({ onDataCreated }: { onDataCreated?: () => voi
 
       {employees.length === 0 && (
         <div className="empty-state">
-          <p>No hay empleados registrados. Añade tu primer empleado para comenzar.</p>
+          <p>No employees registered. Add your first employee to get started.</p>
         </div>
       )}
     </div>

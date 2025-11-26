@@ -1,9 +1,11 @@
 id,nombre,rol,tarifaHora,horasSemana
-emp001,María González,Cocinera Jefe,18.50,40
-emp002,Carlos Ruiz,Cocinero,15.00,38
-emp003,Laura Martínez,Camarera,12.00,35
-emp004,Pedro Sánchez,Camarero,12.00,30
-emp006,Juan Pérez,Ayudante de Cocina,11.00,32
-emp007,Sofía García,Camarera,12.00,28
-emp008,Miguel Torres,Chef de Partie,14.50,36
-emp010,David Moreno,Barman,13.00,30
+1,Lucía Martín,waiter,12.5,40
+2,Carlos Gómez,waiter,11.5,36
+3,Marta Ruiz,waiter,13.0,30
+4,Javier Ortega,cook,14.5,40
+5,Ana Pérez,cook,15.0,40
+6,Raúl Díaz,barista,11.0,30
+7,Elena Soto,manager,20.0,40
+8,Pablo Herrera,dishwasher,9.0,30
+9,Sofía Navarro,waiter,12.0,28
+10,Diego Ramos,cook,14.0,38

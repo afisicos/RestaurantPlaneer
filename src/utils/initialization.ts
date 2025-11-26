@@ -4,7 +4,6 @@ import {
   importSalesFromCSV,
   importExpensesFromCSV,
 } from './csvImporter';
-import { storageService } from './storage';
 
 const FIRST_LOAD_KEY = 'hosteleria_first_load_completed';
 
@@ -26,52 +25,67 @@ export function markFirstLoadCompleted(): void {
  * Importa automáticamente los CSV de ejemplo en la primera carga
  */
 export async function autoImportExampleData(): Promise<void> {
-  if (!isFirstLoad()) {
-    return; // Ya se importó antes
-  }
+  // SIEMPRE importar los datos para asegurar que sean los más recientes
+  // Eliminamos la condición de primera carga para forzar actualización
+
+  // Clear existing data to force reload from new CSV
+  const { storageService } = await import('./storage');
+  storageService.saveSales([]);
+  storageService.saveEmployees([]);
+  storageService.saveProducts([]);
+  storageService.saveExpenses([]);
 
   try {
-    // Importar productos
+    console.log('🔄 Importing sample data...');
+
+    // Import products
     const productsResponse = await fetch('/data/productos.csv');
     if (productsResponse.ok) {
       const productsText = await productsResponse.text();
-      importProductsFromCSV(productsText, false);
+      console.log('📦 Importing products...', productsText.substring(0, 100) + '...');
+      const result = importProductsFromCSV(productsText, false);
+      console.log('📦 Products imported:', result.success);
     }
 
-    // Importar empleados
+    // Import employees
     const employeesResponse = await fetch('/data/empleados.csv');
     if (employeesResponse.ok) {
       const employeesText = await employeesResponse.text();
-      importEmployeesFromCSV(employeesText, false);
+      console.log('👥 Importing employees...', employeesText.substring(0, 100) + '...');
+      const result = importEmployeesFromCSV(employeesText, false);
+      console.log('👥 Employees imported:', result.success);
     }
 
-    // Importar ventas
+    // Import sales
     const salesResponse = await fetch('/data/ventas.csv');
     if (salesResponse.ok) {
       const salesText = await salesResponse.text();
-      importSalesFromCSV(salesText, false);
+      console.log('💰 Importing sales...');
+      const result = importSalesFromCSV(salesText, false);
+      console.log('💰 Sales imported:', result.success);
     }
 
-    // Importar gastos
+    // Import expenses
     const expensesResponse = await fetch('/data/gastos.csv');
     if (expensesResponse.ok) {
       const expensesText = await expensesResponse.text();
-      importExpensesFromCSV(expensesText, false);
+      console.log('📊 Importing expenses...');
+      const result = importExpensesFromCSV(expensesText, false);
+      console.log('📊 Expenses imported:', result.success);
     }
 
-    markFirstLoadCompleted();
+    if (!isFirstLoad()) {
+      console.log('✅ Datos actualizados');
+    } else {
+      markFirstLoadCompleted();
+      console.log('🎉 Primera importación completada');
+    }
+
+    // Forzar actualización del dashboard
+    console.log('🔄 Disparando evento dataImported...');
     window.dispatchEvent(new Event('dataImported'));
+
   } catch (error) {
-    console.error('Error al importar datos de ejemplo:', error);
+    console.error('❌ Error importing sample data:', error);
   }
 }
-
-/**
- * Limpia todos los datos almacenados
- */
-export function clearAllData(): void {
-  storageService.clearAll();
-  localStorage.removeItem(FIRST_LOAD_KEY);
-  window.dispatchEvent(new Event('dataImported'));
-}
-

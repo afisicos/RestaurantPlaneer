@@ -1,31 +1,39 @@
 id,descripcion,cantidad,categoria,fecha
-gast001,Alquiler local enero,1800.00,Alquiler,2024-01-01
-gast002,Suministro eléctrico enero,220.00,Suministros,2024-01-05
-gast003,Suministro agua enero,60.00,Suministros,2024-01-05
-gast004,Compra arroz bomba (50kg),95.00,Materias Primas,2024-01-08
-gast005,Compra marisco fresco,320.00,Materias Primas,2024-01-08
-gast006,Compra jamón ibérico (5kg),280.00,Materias Primas,2024-01-08
-gast007,Compra verduras y hortalizas,130.00,Materias Primas,2024-01-10
-gast008,Compra vino (caja 12 botellas),120.00,Materias Primas,2024-01-10
-gast009,Compra aceite de oliva (20L),70.00,Materias Primas,2024-01-10
-gast010,Mantenimiento horno,150.00,Mantenimiento,2024-01-12
-gast011,Publicidad redes sociales enero,80.00,Marketing,2024-01-15
-gast012,Compra carne y pollo,240.00,Materias Primas,2024-01-15
-gast013,Compra pescado fresco,200.00,Materias Primas,2024-01-15
-gast014,Seguro local enero,120.00,Otros,2024-01-15
-gast015,Compra cerveza (caja 24 botellas),55.00,Materias Primas,2024-01-18
-gast016,Reparación frigorífico,200.00,Mantenimiento,2024-01-18
-gast017,Compra productos limpieza,60.00,Otros,2024-01-20
-gast018,Publicidad Google Ads enero,100.00,Marketing,2024-01-20
-gast019,Compra pan y bollería,70.00,Materias Primas,2024-01-22
-gast020,Compra especias y condimentos,85.00,Materias Primas,2024-01-22
-gast021,Suministro gas enero,100.00,Suministros,2024-01-25
-gast022,Compra postres y helados,130.00,Materias Primas,2024-01-25
-gast023,Uniforme personal nuevo,150.00,Otros,2024-01-25
-gast024,Compra marisco (reposición),280.00,Materias Primas,2024-01-28
-gast025,Publicidad local enero,60.00,Marketing,2024-01-28
-gast026,Compra aceite y vinagre,50.00,Materias Primas,2024-01-30
-gast027,Mantenimiento equipos cocina,120.00,Mantenimiento,2024-01-30
-gast028,Compra frutas frescas,70.00,Materias Primas,2024-01-30
-gast029,Seguro equipamiento,80.00,Otros,2024-01-31
-gast030,Compra bebidas varias,100.00,Materias Primas,2024-01-31
+1,Screwdriver set,66.94,Tools,2025-11-01
+2,Purchase of pasta and rice,190.35,Food supplies,2025-11-02
+3,Commercial TV service,31.81,Television,2025-11-02
+4,Wrenches,64.05,Tools,2025-11-03
+5,Commercial TV service,34.32,Television,2025-11-04
+6,Electricity bill,238.39,Electricity,2025-11-05
+7,Hammer,116.8,Tools,2025-11-05
+8,Oven repair,81.77,Repairs,2025-11-05
+9,Kitchen repair,72.98,Repairs,2025-11-05
+10,Oven repair,144.52,Repairs,2025-11-06
+11,Security,78.92,Security,2025-11-07
+12,Purchase of coffee,87.43,Food supplies,2025-11-08
+13,Fridge repair,158.64,Repairs,2025-11-08
+14,Hammer,125.04,Tools,2025-11-08
+15,Purchase of frozen foods,73.54,Food supplies,2025-11-08
+16,Location insurance,87.2,Insurance,2025-11-09
+17,Uniform washing,34.21,Laundry,2025-11-10
+18,Gas bill,92.64,Gas,2025-11-10
+19,Laundry service,49.17,Laundry,2025-11-10
+20,Security service,50.8,Security,2025-11-11
+21,Commercial TV service,33.69,Television,2025-11-11
+22,Electricity bill,270.76,Electricity,2025-11-12
+23,Gas bill,64.77,Gas,2025-11-13
+24,Fridge repair,151.76,Repairs,2025-11-13
+25,Location insurance,68.57,Insurance,2025-11-13
+26,Tablecloth washing,49.8,Laundry,2025-11-13
+27,Location insurance,81.72,Insurance,2025-11-14
+28,Laundry service,39.74,Laundry,2025-11-14
+29,Wrenches,56.81,Tools,2025-11-14
+30,Location insurance,83.09,Insurance,2025-11-15
+31,Security service,78.84,Security,2025-11-15
+32,Purchase of pasta and rice,223.5,Food supplies,2025-11-16
+33,Kitchen repair,101.09,Repairs,2025-11-17
+34,Uniform washing,20.13,Laundry,2025-11-17
+35,Gas bill,85.54,Gas,2025-11-17
+36,Gas bill,60.7,Gas,2025-11-18
+37,Commercial TV service,31.98,Television,2025-11-19
+38,Security service,44.47,Security,2025-11-19

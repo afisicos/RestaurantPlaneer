@@ -4,7 +4,7 @@ import { storageService } from '../utils/storage';
 import { calculateProductCost } from '../utils/calculations';
 import './Products.css';
 
-export default function Products({ onDataCreated }: { onDataCreated?: () => void }) {
+export default function Products() {
   const [products, setProducts] = useState<Product[]>([]);
   const [employees, setEmployees] = useState(storageService.getEmployees());
   const [showForm, setShowForm] = useState(false);
@@ -24,25 +24,6 @@ export default function Products({ onDataCreated }: { onDataCreated?: () => void
     loadEmployees();
   }, []);
 
-  // Escuchar evento del tutorial para abrir formulario automáticamente
-  useEffect(() => {
-    const handleTutorialInteractive = (e: CustomEvent) => {
-      if (e.detail?.stepType === 'productCreated') {
-        setShowForm(true);
-        setTimeout(() => {
-          formRef.current?.scrollIntoView({ 
-            behavior: 'smooth', 
-            block: 'start' 
-          });
-        }, 100);
-      }
-    };
-
-    window.addEventListener('tutorialEnterInteractive', handleTutorialInteractive as EventListener);
-    return () => {
-      window.removeEventListener('tutorialEnterInteractive', handleTutorialInteractive as EventListener);
-    };
-  }, []);
 
   // Scroll automático al editar un producto
   useEffect(() => {
@@ -86,9 +67,6 @@ export default function Products({ onDataCreated }: { onDataCreated?: () => void
     storageService.saveProducts(updatedProducts);
     loadProducts();
     resetForm();
-    if (!editingProduct && onDataCreated) {
-      onDataCreated();
-    }
   };
 
   const resetForm = () => {
@@ -118,7 +96,7 @@ export default function Products({ onDataCreated }: { onDataCreated?: () => void
   };
 
   const handleDelete = (id: string) => {
-    if (confirm('¿Estás seguro de eliminar este producto?')) {
+    if (confirm('Are you sure you want to delete this product?')) {
       const updatedProducts = products.filter(p => p.id !== id);
       storageService.saveProducts(updatedProducts);
       loadProducts();
@@ -135,18 +113,18 @@ export default function Products({ onDataCreated }: { onDataCreated?: () => void
   return (
     <div className="products-page">
       <div className="page-header">
-        <h1>Gestión de Productos</h1>
+        <h1>Product Management</h1>
         <button className="btn-primary" onClick={() => setShowForm(!showForm)}>
-          {showForm ? 'Cancelar' : '+ Nuevo Producto'}
+          {showForm ? 'Cancel' : '+ New Product'}
         </button>
       </div>
 
       {showForm && (
         <div ref={formRef} className="form-card">
-          <h2>{editingProduct ? 'Editar Producto' : 'Nuevo Producto'}</h2>
+          <h2>{editingProduct ? 'Edit Product' : 'New Product'}</h2>
           <form onSubmit={handleSubmit}>
             <div className="form-group">
-              <label>Nombre del Producto</label>
+              <label>Product Name</label>
               <input
                 type="text"
                 value={formData.name}
@@ -157,7 +135,7 @@ export default function Products({ onDataCreated }: { onDataCreated?: () => void
 
             <div className="form-row">
               <div className="form-group">
-                <label>Precio (€)</label>
+                <label>Price (€)</label>
                 <input
                   type="number"
                   step="0.01"
@@ -168,7 +146,7 @@ export default function Products({ onDataCreated }: { onDataCreated?: () => void
               </div>
 
               <div className="form-group">
-                <label>Categoría</label>
+                <label>Category</label>
                 <input
                   type="text"
                   value={formData.category}
@@ -180,7 +158,7 @@ export default function Products({ onDataCreated }: { onDataCreated?: () => void
 
             <div className="form-row">
               <div className="form-group">
-                <label>Tiempo de Preparación (minutos)</label>
+                <label>Preparation Time (minutes)</label>
                 <input
                   type="number"
                   step="0.1"
@@ -191,7 +169,7 @@ export default function Products({ onDataCreated }: { onDataCreated?: () => void
               </div>
 
               <div className="form-group">
-                <label>Almacenaje Requerido (m³)</label>
+                <label>Storage Required (m³)</label>
                 <input
                   type="number"
                   step="0.01"
@@ -203,7 +181,7 @@ export default function Products({ onDataCreated }: { onDataCreated?: () => void
             </div>
 
             <div className="form-group">
-              <label>Horas de Empleado Requeridas</label>
+              <label>Employee Hours Required</label>
               <input
                 type="number"
                 step="0.1"
@@ -215,10 +193,10 @@ export default function Products({ onDataCreated }: { onDataCreated?: () => void
 
             <div className="form-actions">
               <button type="submit" className="btn-primary">
-                {editingProduct ? 'Actualizar' : 'Crear'}
+                {editingProduct ? 'Update' : 'Create'}
               </button>
               <button type="button" className="btn-secondary" onClick={resetForm}>
-                Cancelar
+                Cancel
               </button>
             </div>
           </form>
@@ -245,17 +223,17 @@ export default function Products({ onDataCreated }: { onDataCreated?: () => void
                 </div>
               </div>
               <div className="product-info">
-                <p><strong>Categoría:</strong> {product.category}</p>
-                <p><strong>Precio:</strong> {formatCurrency(product.price)}</p>
-                <p><strong>Costo Estimado:</strong> {formatCurrency(cost)}</p>
-                <p><strong>Margen:</strong> 
+                <p><strong>Category:</strong> {product.category}</p>
+                <p><strong>Price:</strong> {formatCurrency(product.price)}</p>
+                <p><strong>Estimated Cost:</strong> {formatCurrency(cost)}</p>
+                <p><strong>Margin:</strong>
                   <span className={margin >= 0 ? 'positive' : 'negative'}>
                     {formatCurrency(margin)} ({marginPercentage.toFixed(1)}%)
                   </span>
                 </p>
-                <p><strong>Tiempo Prep:</strong> {product.preparationTime} min</p>
-                <p><strong>Almacenaje:</strong> {product.storageRequired} m³</p>
-                <p><strong>Horas Empleado:</strong> {product.employeeHoursRequired}h</p>
+                <p><strong>Prep Time:</strong> {product.preparationTime} min</p>
+                <p><strong>Storage:</strong> {product.storageRequired} m³</p>
+                <p><strong>Employee Hours:</strong> {product.employeeHoursRequired}h</p>
               </div>
             </div>
           );
@@ -264,7 +242,7 @@ export default function Products({ onDataCreated }: { onDataCreated?: () => void
 
       {products.length === 0 && (
         <div className="empty-state">
-          <p>No hay productos registrados. Crea tu primer producto para comenzar.</p>
+          <p>No products registered. Create your first product to get started.</p>
         </div>
       )}
     </div>

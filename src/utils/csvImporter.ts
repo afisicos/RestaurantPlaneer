@@ -6,16 +6,34 @@ import { storageService } from './storage';
  * Convierte datos CSV de productos al formato de la aplicación
  */
 export function importProducts(csvData: Record<string, string>[]): Product[] {
-  return csvData.map(row => ({
-    id: row.id || row.Id || '',
-    name: row.nombre || row.name || '',
-    price: parseFloat(row.precio || row.price || '0'),
-    category: row.categoria || row.category || '',
-    preparationTime: parseFloat(row.tiempoPreparacion || row.preparationTime || '0'),
-    storageRequired: parseFloat(row.almacenajeRequerido || row.storageRequired || '0'),
-    employeeHoursRequired: parseFloat(row.horasEmpleadoRequeridas || row.employeeHoursRequired || '0'),
-    ingredients: [], // Los ingredientes no están en el CSV, se inicializan vacíos
-  })).filter(p => p.id && p.name); // Filtrar filas inválidas
+  return csvData.map(row => {
+    // Convertir almacenajeRequerido de texto a número (si es texto, usar valor por defecto)
+    const storageValue = row.storageRequired || row.almacenajeRequerido || '0';
+    let storageRequired = parseFloat(storageValue);
+    
+    // Si no es un número válido (es texto como "nevera", "horno", etc.), usar valor por defecto
+    if (isNaN(storageRequired)) {
+      // Valores por defecto según el tipo de almacenamiento
+      const storageMap: Record<string, number> = {
+        'nevera': 0.5,
+        'horno': 0.3,
+        'ambiente': 0.1,
+        'bodega': 0.2,
+      };
+      storageRequired = storageMap[storageValue.toLowerCase()] || 0.3;
+    }
+    
+    return {
+      id: row.id || row.Id || '',
+      name: row.name || row.nombre || '',
+      price: parseFloat(row.price || row.precio || '0'),
+      category: row.category || row.categoria || '',
+      preparationTime: parseFloat(row.preparationTime || row.tiempoPreparacion || '0'),
+      storageRequired: storageRequired,
+      employeeHoursRequired: parseFloat(row.employeeHoursRequired || row.horasEmpleadoRequeridas || '0'),
+      ingredients: [], // Los ingredientes no están en el CSV, se inicializan vacíos
+    };
+  }).filter(p => p.id && p.name); // Filtrar filas inválidas
 }
 
 /**
@@ -24,10 +42,10 @@ export function importProducts(csvData: Record<string, string>[]): Product[] {
 export function importEmployees(csvData: Record<string, string>[]): Employee[] {
   return csvData.map(row => ({
     id: row.id || row.Id || '',
-    name: row.nombre || row.name || '',
-    role: row.rol || row.role || '',
-    hourlyRate: parseFloat(row.tarifaHora || row.hourlyRate || '0'),
-    hoursPerWeek: parseFloat(row.horasSemana || row.hoursPerWeek || '0'),
+    name: row.name || row.nombre || '',
+    role: row.role || row.rol || '',
+    hourlyRate: parseFloat(row.hourlyRate || row.tarifaHora || '0'),
+    hoursPerWeek: parseFloat(row.hoursPerWeek || row.horasSemana || '0'),
   })).filter(e => e.id && e.name); // Filtrar filas inválidas
 }
 

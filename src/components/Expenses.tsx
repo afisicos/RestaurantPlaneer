@@ -3,7 +3,7 @@ import type { Expense } from '../types';
 import { storageService } from '../utils/storage';
 import './Expenses.css';
 
-export default function Expenses({ onDataCreated }: { onDataCreated?: () => void }) {
+export default function Expenses() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [editingExpense, setEditingExpense] = useState<Expense | null>(null);
@@ -28,19 +28,6 @@ export default function Expenses({ onDataCreated }: { onDataCreated?: () => void
     loadExpenses();
   }, []);
 
-  // Escuchar evento del tutorial para abrir formulario automáticamente
-  useEffect(() => {
-    const handleTutorialInteractive = (e: CustomEvent) => {
-      if (e.detail?.stepType === 'expenseCreated') {
-        setShowForm(true);
-      }
-    };
-
-    window.addEventListener('tutorialEnterInteractive', handleTutorialInteractive as EventListener);
-    return () => {
-      window.removeEventListener('tutorialEnterInteractive', handleTutorialInteractive as EventListener);
-    };
-  }, []);
 
   const loadExpenses = () => {
     setExpenses(storageService.getExpenses());
@@ -64,9 +51,6 @@ export default function Expenses({ onDataCreated }: { onDataCreated?: () => void
     storageService.saveExpenses(updatedExpenses);
     loadExpenses();
     resetForm();
-    if (!editingExpense && onDataCreated) {
-      onDataCreated();
-    }
   };
 
   const resetForm = () => {
@@ -92,7 +76,7 @@ export default function Expenses({ onDataCreated }: { onDataCreated?: () => void
   };
 
   const handleDelete = (id: string) => {
-    if (confirm('¿Estás seguro de eliminar este gasto?')) {
+    if (confirm('Are you sure you want to delete this expense?')) {
       const updatedExpenses = expenses.filter(e => e.id !== id);
       storageService.saveExpenses(updatedExpenses);
       loadExpenses();
@@ -122,18 +106,18 @@ export default function Expenses({ onDataCreated }: { onDataCreated?: () => void
   return (
     <div className="expenses-page">
       <div className="page-header">
-        <h1>Gestión de Gastos</h1>
+        <h1>Expense Management</h1>
         <button className="btn-primary" onClick={() => setShowForm(!showForm)}>
-          {showForm ? 'Cancelar' : '+ Nuevo Gasto'}
+          {showForm ? 'Cancel' : '+ New Expense'}
         </button>
       </div>
 
       {showForm && (
         <div className="form-card">
-          <h2>{editingExpense ? 'Editar Gasto' : 'Nuevo Gasto'}</h2>
+          <h2>{editingExpense ? 'Edit Expense' : 'New Expense'}</h2>
           <form onSubmit={handleSubmit}>
             <div className="form-group">
-              <label>Descripción</label>
+              <label>Description</label>
               <input
                 type="text"
                 value={formData.description}
@@ -144,7 +128,7 @@ export default function Expenses({ onDataCreated }: { onDataCreated?: () => void
 
             <div className="form-row">
               <div className="form-group">
-                <label>Cantidad (€)</label>
+                <label>Amount (€)</label>
                 <input
                   type="number"
                   step="0.01"
@@ -155,13 +139,13 @@ export default function Expenses({ onDataCreated }: { onDataCreated?: () => void
               </div>
 
               <div className="form-group">
-                <label>Categoría</label>
+                <label>Category</label>
                 <select
                   value={formData.category}
                   onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                   required
                 >
-                  <option value="">Seleccionar categoría</option>
+                  <option value="">Select category</option>
                   {categories.map((cat) => (
                     <option key={cat} value={cat}>
                       {cat}
@@ -172,7 +156,7 @@ export default function Expenses({ onDataCreated }: { onDataCreated?: () => void
             </div>
 
             <div className="form-group">
-              <label>Fecha</label>
+              <label>Date</label>
               <input
                 type="date"
                 value={formData.date}
@@ -183,10 +167,10 @@ export default function Expenses({ onDataCreated }: { onDataCreated?: () => void
 
             <div className="form-actions">
               <button type="submit" className="btn-primary">
-                {editingExpense ? 'Actualizar' : 'Registrar'}
+                {editingExpense ? 'Update' : 'Register'}
               </button>
               <button type="button" className="btn-secondary" onClick={resetForm}>
-                Cancelar
+                Cancel
               </button>
             </div>
           </form>
@@ -194,7 +178,7 @@ export default function Expenses({ onDataCreated }: { onDataCreated?: () => void
       )}
 
       <div className="expenses-summary">
-        <h2>Resumen por Categoría</h2>
+        <h2>Summary by Category</h2>
         <div className="summary-grid">
           {Object.entries(expensesByCategory).map(([category, total]) => (
             <div key={category} className="summary-card">
@@ -206,16 +190,16 @@ export default function Expenses({ onDataCreated }: { onDataCreated?: () => void
       </div>
 
       <div className="expenses-table-card">
-        <h2>Historial de Gastos</h2>
+        <h2>Expense History</h2>
         <div className="table-container">
           <table className="expenses-table">
             <thead>
               <tr>
-                <th>Fecha</th>
-                <th>Descripción</th>
-                <th>Categoría</th>
-                <th>Cantidad</th>
-                <th>Acciones</th>
+                <th>Date</th>
+                <th>Description</th>
+                <th>Category</th>
+                <th>Amount</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -244,7 +228,7 @@ export default function Expenses({ onDataCreated }: { onDataCreated?: () => void
 
       {expenses.length === 0 && (
         <div className="empty-state">
-          <p>No hay gastos registrados. Registra tu primer gasto para comenzar.</p>
+          <p>No expenses registered. Register your first expense to get started.</p>
         </div>
       )}
     </div>

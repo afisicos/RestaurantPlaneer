@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug LocalStorage</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .section { margin: 20px 0; padding: 10px; border: 1px solid #ccc; }
+        .error { color: red; }
+        .success { color: green; }
+        button { padding: 10px 15px; margin: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Debug LocalStorage - Restaurant Studio</h1>
+
+    <div class="section">
+        <h2>LocalStorage Contents</h2>
+        <div id="localStorageContent">Checking...</div>
+    </div>
+
+    <div class="section">
+        <h2>CSV Files Check</h2>
+        <div id="csvCheck">Checking...</div>
+    </div>
+
+    <div class="section">
+        <h2>Actions</h2>
+        <button onclick="clearLocalStorage()">Clear LocalStorage & Reload</button>
+        <button onclick="checkCSVs()">Check CSV Files</button>
+        <button onclick="openApp()">Open Restaurant Studio</button>
+    </div>
+
+    <script>
+        // Check localStorage
+        function checkLocalStorage() {
+            const keys = Object.keys(localStorage);
+            const hosteleriaKeys = keys.filter(key => key.includes('hosteleria'));
+
+            let content = '<h3>Hostelería Keys Found:</h3>';
+            if (hosteleriaKeys.length === 0) {
+                content += '<p class="error">No hostelería data found in localStorage</p>';
+            } else {
+                hosteleriaKeys.forEach(key => {
+                    try {
+                        const data = JSON.parse(localStorage.getItem(key));
+                        content += `<p><strong>${key}:</strong> ${Array.isArray(data) ? data.length : 'object'} items</p>`;
+
+                        // Show sample data
+                        if (key.includes('products') && data.length > 0) {
+                            content += `<p>Sample product: "${data[0].name}" (${data[0].category})</p>`;
+                        }
+                        if (key.includes('employees') && data.length > 0) {
+                            content += `<p>Sample employee: "${data[0].name}" (${data[0].role})</p>`;
+                        }
+                    } catch (e) {
+                        content += `<p class="error">${key}: Error parsing data</p>`;
+                    }
+                });
+            }
+
+            document.getElementById('localStorageContent').innerHTML = content;
+        }
+
+        // Check CSV files
+        async function checkCSVs() {
+            const files = ['productos.csv', 'empleados.csv'];
+            let content = '';
+
+            for (const file of files) {
+                try {
+                    const response = await fetch(`/data/${file}`);
+                    if (response.ok) {
+                        const text = await response.text();
+                        const lines = text.split('\n').slice(0, 3);
+                        content += `<h4>${file}:</h4>`;
+                        lines.forEach((line, i) => {
+                            content += `<p>Line ${i+1}: ${line}</p>`;
+                        });
+
+                        // Check language
+                        if (text.includes('Main Course') || text.includes('Head Chef')) {
+                            content += '<p class="success">✅ Contains ENGLISH</p>';
+                        } else if (text.includes('Plato Principal') || text.includes('Cocinera Jefe')) {
+                            content += '<p class="error">❌ Contains SPANISH</p>';
+                        } else {
+                            content += '<p>⚠️ Language not detected</p>';
+                        }
+                    } else {
+                        content += `<p class="error">${file}: HTTP ${response.status}</p>`;
+                    }
+                } catch (e) {
+                    content += `<p class="error">${file}: Error - ${e.message}</p>`;
+                }
+            }
+
+            document.getElementById('csvCheck').innerHTML = content;
+        }
+
+        // Clear localStorage
+        function clearLocalStorage() {
+            if (confirm('This will clear all localStorage data and reload the page. Continue?')) {
+                localStorage.clear();
+                location.reload();
+            }
+        }
+
+        // Open app
+        function openApp() {
+            window.open('/', '_blank');
+        }
+
+        // Initialize
+        checkLocalStorage();
+        checkCSVs();
+    </script>
+</body>
+</html>
