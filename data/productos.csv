@@ -6,7 +6,7 @@ id,nombre,precio,categoria,tiempoPreparacion,almacenajeRequerido,horasEmpleadoRe
 5,Classic burger,12.5,main,15,fridge,0.8
 6,Baked cod,16.0,main,25,fridge,1.0
 7,Mixed paella (portion),17.0,main,30,fridge,1.2
-8,Margherita pizza,17.0,main,20,oven,0.9
+8,Margherita pizza,17.0,main,20,oven,0.6
 9,Pasta carbonara,11.5,main,18,fridge,0.8
 10,Cold cuts platter,13.0,snack,5,fridge,0.3
 11,Patatas bravas (spicy potatoes),7.0,snack,8,fridge,0.4
