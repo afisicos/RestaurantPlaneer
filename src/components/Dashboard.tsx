@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { getDashboardStats, getSalesByDay, getExpensesByCategory } from '../utils/calculations';
 import './Dashboard.css';
@@ -29,12 +29,34 @@ export default function Dashboard() {
     // También escuchar eventos personalizados de importación
     window.addEventListener('dataImported', handleStorageChange);
 
-    // Actualizar periódicamente por si acaso
+    // Actualizar periódicamente solo si hay cambios (cada 5 segundos para evitar parpadeos)
     const interval = setInterval(() => {
-      setStats(getDashboardStats());
-      setSalesByDay(getSalesByDay('month'));
-      setExpensesByCategory(getExpensesByCategory());
-    }, 2000);
+      const newStats = getDashboardStats();
+      const newSalesByDay = getSalesByDay('month');
+      const newExpensesByCategory = getExpensesByCategory();
+      
+      // Solo actualizar si hay cambios reales
+      setStats(prevStats => {
+        if (JSON.stringify(prevStats) !== JSON.stringify(newStats)) {
+          return newStats;
+        }
+        return prevStats;
+      });
+      
+      setSalesByDay(prevSales => {
+        if (JSON.stringify(prevSales) !== JSON.stringify(newSalesByDay)) {
+          return newSalesByDay;
+        }
+        return prevSales;
+      });
+      
+      setExpensesByCategory(prevExpenses => {
+        if (JSON.stringify(prevExpenses) !== JSON.stringify(newExpensesByCategory)) {
+          return newExpensesByCategory;
+        }
+        return prevExpenses;
+      });
+    }, 5000);
 
     return () => {
       window.removeEventListener('storage', handleStorageChange);
@@ -80,10 +102,12 @@ export default function Dashboard() {
     costs: p.totalCost,
   }));
 
-  const pieData = stats.topProducts.slice(0, 10).map(p => ({
-    name: p.productName,
-    value: p.revenue,
-  }));
+  const pieData = useMemo(() => {
+    return stats.topProducts.slice(0, 10).map(p => ({
+      name: p.productName,
+      value: p.revenue,
+    }));
+  }, [stats.topProducts]);
 
 
   return (
@@ -222,7 +246,7 @@ export default function Dashboard() {
                 dataKey="value"
                 stroke="#fff"
                 strokeWidth={2}
-                isAnimationActive={true}
+                isAnimationActive={false}
               >
                 {pieData.map((_, index) => (
                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />

@@ -2,14 +2,14 @@ id,nombre,precio,categoria,tiempoPreparacion,almacenajeRequerido,horasEmpleadoRe
 1,Avocado toast,8.5,starter,7,fridge,0.2
 2,Homemade croquettes (portion),6.0,starter,12,fridge,0.3
 3,Caesar salad,9.0,salad,10,fridge,0.4
-4,Soup of the day,5.5,starter,15,fridge,0.5
+4,Soup of the day,8.5,starter,15,fridge,0.5
 5,Classic burger,12.5,main,15,fridge,0.8
 6,Baked cod,16.0,main,25,fridge,1.0
-7,Mixed paella (portion),14.0,main,30,fridge,1.2
-8,Margherita pizza,11.0,main,20,oven,0.9
+7,Mixed paella (portion),17.0,main,30,fridge,1.2
+8,Margherita pizza,17.0,main,20,oven,0.9
 9,Pasta carbonara,11.5,main,18,fridge,0.8
 10,Cold cuts platter,13.0,snack,5,fridge,0.3
-11,Patatas bravas (spicy potatoes),5.0,snack,8,fridge,0.4
+11,Patatas bravas (spicy potatoes),7.0,snack,8,fridge,0.4
 12,Cheesecake,5.5,dessert,0,fridge,0.2
 13,Brownie with ice cream,6.0,dessert,0,fridge,0.3
 14,Espresso,1.8,drink,0,room,0.05
