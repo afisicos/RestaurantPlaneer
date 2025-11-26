@@ -15,7 +15,7 @@ function Navigation() {
   return (
     <nav className="navbar">
       <div className="nav-container">
-        <h1 className="nav-logo">🍽️ Hostelería Pro</h1>
+        <h1 className="nav-logo">🍽️ Restaurant Studio</h1>
         <ul className="nav-menu">
           <li>
             <Link to="/" className={isActive('/') ? 'active' : ''}>
