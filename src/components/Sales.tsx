@@ -3,7 +3,7 @@ import type { Sale, Product, Employee } from '../types';
 import { storageService } from '../utils/storage';
 import './Sales.css';
 
-export default function Sales() {
+export default function Sales({ onDataCreated }: { onDataCreated?: () => void }) {
   const [sales, setSales] = useState<Sale[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [employees, setEmployees] = useState<Employee[]>([]);
@@ -18,6 +18,20 @@ export default function Sales() {
 
   useEffect(() => {
     loadData();
+  }, []);
+
+  // Escuchar evento del tutorial para abrir formulario automáticamente
+  useEffect(() => {
+    const handleTutorialInteractive = (e: CustomEvent) => {
+      if (e.detail?.stepType === 'saleCreated') {
+        setShowForm(true);
+      }
+    };
+
+    window.addEventListener('tutorialEnterInteractive', handleTutorialInteractive as EventListener);
+    return () => {
+      window.removeEventListener('tutorialEnterInteractive', handleTutorialInteractive as EventListener);
+    };
   }, []);
 
   const loadData = () => {
@@ -45,6 +59,9 @@ export default function Sales() {
     storageService.saveSales(updatedSales);
     loadData();
     resetForm();
+    if (onDataCreated) {
+      onDataCreated();
+    }
   };
 
   const resetForm = () => {

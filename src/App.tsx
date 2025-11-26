@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
 import Dashboard from './components/Dashboard';
 import Products from './components/Products';
@@ -5,9 +6,11 @@ import Employees from './components/Employees';
 import Sales from './components/Sales';
 import Expenses from './components/Expenses';
 import ImportData from './components/ImportData';
+import OnboardingTutorial from './components/OnboardingTutorial';
+import { autoImportExampleData, clearAllData } from './utils/initialization';
 import './App.css';
 
-function Navigation() {
+function Navigation({ onStartTutorial }: { onStartTutorial: () => void }) {
   const location = useLocation();
 
   const isActive = (path: string) => location.pathname === path;
@@ -47,6 +50,11 @@ function Navigation() {
               Importar CSV
             </Link>
           </li>
+          <li>
+            <button className="nav-tutorial-btn" onClick={onStartTutorial}>
+              Definir mi restaurante
+            </button>
+          </li>
         </ul>
       </div>
     </nav>
@@ -54,20 +62,45 @@ function Navigation() {
 }
 
 function App() {
+  const [showTutorial, setShowTutorial] = useState(false);
+  const [tutorialStep, setTutorialStep] = useState(0);
+
+  useEffect(() => {
+    autoImportExampleData();
+  }, []);
+
+  const handleStartTutorial = () => {
+    if (confirm('¿Estás seguro? Esto eliminará todos los datos de ejemplo y comenzará el tutorial paso a paso.')) {
+      clearAllData();
+      setTutorialStep(0);
+      setShowTutorial(true);
+    }
+  };
+
+  const handleCloseTutorial = () => {
+    setShowTutorial(false);
+  };
+
   return (
     <BrowserRouter>
       <div className="app">
-        <Navigation />
+        <Navigation onStartTutorial={handleStartTutorial} />
         <main className="main-content">
           <Routes>
             <Route path="/" element={<Dashboard />} />
-            <Route path="/products" element={<Products />} />
-            <Route path="/sales" element={<Sales />} />
-            <Route path="/employees" element={<Employees />} />
-            <Route path="/expenses" element={<Expenses />} />
+            <Route path="/products" element={<Products onDataCreated={() => window.dispatchEvent(new Event('productCreated'))} />} />
+            <Route path="/sales" element={<Sales onDataCreated={() => window.dispatchEvent(new Event('saleCreated'))} />} />
+            <Route path="/employees" element={<Employees onDataCreated={() => window.dispatchEvent(new Event('employeeCreated'))} />} />
+            <Route path="/expenses" element={<Expenses onDataCreated={() => window.dispatchEvent(new Event('expenseCreated'))} />} />
             <Route path="/import" element={<ImportData />} />
           </Routes>
         </main>
+        {showTutorial && (
+          <OnboardingTutorial 
+            onClose={handleCloseTutorial} 
+            initialStep={tutorialStep}
+          />
+        )}
       </div>
     </BrowserRouter>
   );

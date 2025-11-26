@@ -56,5 +56,12 @@ export const storageService = {
   saveExpenses: (expenses: Expense[]): void => {
     localStorage.setItem(STORAGE_KEYS.EXPENSES, JSON.stringify(expenses));
   },
+
+  clearAll: (): void => {
+    localStorage.removeItem(STORAGE_KEYS.PRODUCTS);
+    localStorage.removeItem(STORAGE_KEYS.EMPLOYEES);
+    localStorage.removeItem(STORAGE_KEYS.SALES);
+    localStorage.removeItem(STORAGE_KEYS.EXPENSES);
+  },
 };
 

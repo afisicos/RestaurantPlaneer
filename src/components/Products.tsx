@@ -4,7 +4,7 @@ import { storageService } from '../utils/storage';
 import { calculateProductCost } from '../utils/calculations';
 import './Products.css';
 
-export default function Products() {
+export default function Products({ onDataCreated }: { onDataCreated?: () => void }) {
   const [products, setProducts] = useState<Product[]>([]);
   const [employees, setEmployees] = useState(storageService.getEmployees());
   const [showForm, setShowForm] = useState(false);
@@ -22,6 +22,26 @@ export default function Products() {
   useEffect(() => {
     loadProducts();
     loadEmployees();
+  }, []);
+
+  // Escuchar evento del tutorial para abrir formulario automáticamente
+  useEffect(() => {
+    const handleTutorialInteractive = (e: CustomEvent) => {
+      if (e.detail?.stepType === 'productCreated') {
+        setShowForm(true);
+        setTimeout(() => {
+          formRef.current?.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'start' 
+          });
+        }, 100);
+      }
+    };
+
+    window.addEventListener('tutorialEnterInteractive', handleTutorialInteractive as EventListener);
+    return () => {
+      window.removeEventListener('tutorialEnterInteractive', handleTutorialInteractive as EventListener);
+    };
   }, []);
 
   // Scroll automático al editar un producto
@@ -66,6 +86,9 @@ export default function Products() {
     storageService.saveProducts(updatedProducts);
     loadProducts();
     resetForm();
+    if (!editingProduct && onDataCreated) {
+      onDataCreated();
+    }
   };
 
   const resetForm = () => {

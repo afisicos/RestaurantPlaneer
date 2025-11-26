@@ -1,0 +1,258 @@
+.onboarding-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  z-index: 10000;
+  animation: fadeIn 0.3s ease;
+  padding-top: 2rem;
+  overflow-y: auto;
+  pointer-events: auto;
+}
+
+.onboarding-overlay.interactive-mode {
+  align-items: flex-start;
+  padding-top: 1rem;
+  pointer-events: none; /* Permitir clics a través del overlay */
+}
+
+.onboarding-overlay.interactive-mode .onboarding-modal {
+  pointer-events: auto; /* Pero mantener interactivo el modal del tutorial */
+}
+
+.onboarding-modal {
+  background: var(--card-bg);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xl);
+  max-width: 600px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: slideUp 0.3s ease;
+  margin-bottom: 2rem;
+  pointer-events: auto;
+}
+
+.onboarding-modal.compact {
+  max-width: 500px;
+  position: sticky;
+  top: 1rem;
+  pointer-events: auto;
+  z-index: 10001;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.onboarding-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.step-indicator {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.step-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--border-color);
+  transition: all 0.3s ease;
+}
+
+.step-dot.active {
+  background: var(--primary-color);
+  width: 12px;
+  height: 12px;
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);
+}
+
+.step-dot.completed {
+  background: var(--success-color);
+}
+
+.step-dot:hover {
+  transform: scale(1.2);
+}
+
+.close-button {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-md);
+  transition: all 0.2s ease;
+}
+
+.close-button:hover {
+  background: var(--bg-color);
+  color: var(--text-primary);
+}
+
+.onboarding-content {
+  padding: 2rem;
+}
+
+.onboarding-content h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.step-description {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.instructions-box {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.instructions-box h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.instructions-list {
+  margin: 0;
+  padding-left: 1.5rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+
+.instructions-list li {
+  margin-bottom: 0.75rem;
+}
+
+.instructions-list li:last-child {
+  margin-bottom: 0;
+}
+
+.onboarding-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+.btn-skip {
+  background: transparent;
+  color: var(--text-secondary);
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-lg);
+  font-weight: 500;
+  font-size: 0.875rem;
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-skip:hover {
+  background: var(--bg-color);
+  color: var(--text-primary);
+  border-color: var(--text-secondary);
+}
+
+.onboarding-actions .btn-secondary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.interactive-mode-content {
+  padding: 1rem 0;
+}
+
+.interactive-message {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.interactive-message p {
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+.interactive-message p:first-child {
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.interactive-message .hint {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  margin-bottom: 0.5rem;
+}
+
+.interactive-message .hint-small {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-top: 0.5rem;
+  margin-bottom: 0;
+  opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+  .onboarding-modal {
+    width: 95%;
+    max-height: 95vh;
+  }
+
+  .onboarding-modal.compact {
+    width: 95%;
+    position: relative;
+    top: 0;
+  }
+
+  .onboarding-content {
+    padding: 1.5rem;
+  }
+
+  .onboarding-content h2 {
+    font-size: 1.5rem;
+  }
+
+  .onboarding-actions {
+    flex-direction: column;
+  }
+
+  .onboarding-actions button {
+    width: 100%;
+  }
+}
+

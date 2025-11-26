@@ -3,7 +3,7 @@ import type { Employee } from '../types';
 import { storageService } from '../utils/storage';
 import './Employees.css';
 
-export default function Employees() {
+export default function Employees({ onDataCreated }: { onDataCreated?: () => void }) {
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [editingEmployee, setEditingEmployee] = useState<Employee | null>(null);
@@ -16,6 +16,20 @@ export default function Employees() {
 
   useEffect(() => {
     loadEmployees();
+  }, []);
+
+  // Escuchar evento del tutorial para abrir formulario automáticamente
+  useEffect(() => {
+    const handleTutorialInteractive = (e: CustomEvent) => {
+      if (e.detail?.stepType === 'employeeCreated') {
+        setShowForm(true);
+      }
+    };
+
+    window.addEventListener('tutorialEnterInteractive', handleTutorialInteractive as EventListener);
+    return () => {
+      window.removeEventListener('tutorialEnterInteractive', handleTutorialInteractive as EventListener);
+    };
   }, []);
 
   const loadEmployees = () => {
@@ -40,6 +54,9 @@ export default function Employees() {
     storageService.saveEmployees(updatedEmployees);
     loadEmployees();
     resetForm();
+    if (!editingEmployee && onDataCreated) {
+      onDataCreated();
+    }
   };
 
   const resetForm = () => {

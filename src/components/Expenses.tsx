@@ -3,7 +3,7 @@ import type { Expense } from '../types';
 import { storageService } from '../utils/storage';
 import './Expenses.css';
 
-export default function Expenses() {
+export default function Expenses({ onDataCreated }: { onDataCreated?: () => void }) {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [editingExpense, setEditingExpense] = useState<Expense | null>(null);
@@ -28,6 +28,20 @@ export default function Expenses() {
     loadExpenses();
   }, []);
 
+  // Escuchar evento del tutorial para abrir formulario automáticamente
+  useEffect(() => {
+    const handleTutorialInteractive = (e: CustomEvent) => {
+      if (e.detail?.stepType === 'expenseCreated') {
+        setShowForm(true);
+      }
+    };
+
+    window.addEventListener('tutorialEnterInteractive', handleTutorialInteractive as EventListener);
+    return () => {
+      window.removeEventListener('tutorialEnterInteractive', handleTutorialInteractive as EventListener);
+    };
+  }, []);
+
   const loadExpenses = () => {
     setExpenses(storageService.getExpenses());
   };
@@ -50,6 +64,9 @@ export default function Expenses() {
     storageService.saveExpenses(updatedExpenses);
     loadExpenses();
     resetForm();
+    if (!editingExpense && onDataCreated) {
+      onDataCreated();
+    }
   };
 
   const resetForm = () => {
