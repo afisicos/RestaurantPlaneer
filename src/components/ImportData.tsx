@@ -284,9 +284,6 @@ export default function ImportData() {
                 {isImporting ? 'Importing...' : 'Import All Sample Files'}
               </button>
             </div>
-            <p className="help-text">
-              This will automatically import productos.csv, empleados.csv, ventas.csv and gastos.csv from the /data/ folder
-            </p>
           </div>
         </div>
 
